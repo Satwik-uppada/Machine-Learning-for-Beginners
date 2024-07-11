@@ -1,0 +1,236 @@
+sub queries
+Types of sub queries:
+1. Scalar subquery - only single value output(one row, one col) - (used '=' operator)
+2. Multirow subquery - one col with multiple rows("in" keyword ), multiple col with multiple rows("from" keyword)
+3. Correlated subquery - where inner query result depends on outer query 
+
+
+
+
+questions for practise
+
+1.
+
+paintings --> id, name, artist_id, listed price
+
+artists --> id, first_name, last_name
+
+collector --> id, first name, last name
+
+sales --> id, date, painting id, artist id, collector id, sales price
+
+
+1. scalar sub query --> list paintings that are priced higher than the average. Return name and listed price
+
+select name, listed_price from paintings where listed_price > (select avg(listed_price) from paintings)
+
+
+2. multi row subquery --> list of all collectors who purchased paintings from gallery. return first name and last name.
+
+select first_name, last_name from collector where id in (select distinct collector_id from sales)
+
+
+3. total amount of sales for each artist who has sold at least one painting in gallery. Return first name and last name and sales
+
+select first_name, last_name, sum(sales_price) from artists join sales on 
+artists.id = sales.artist_id where artists.id in (select artist_id from sales where count(painting_id) >= 1 group by artist_id) group by artist.id 
+
+
+4.calcualte the no.of paintings purchased through galary
+
+select count(*) from sales 
+
+
+5. zero sales artist
+
+select first_name , last_name from artists where id not in (select artist_id from sales);
+
+
+
+
+
+
+
+
+------------------------------------------------------------------------------------------
+Date: 29-7-24, sat
+
+tables:
+
+concerts --> id(pk), city, country, year, rating, orchestra_id (fk)
+
+orchestras --> id(pk), name, rating, city_origin, country_orgin, year
+
+members --> id(pk), name, position, experience, orchestra_id (fk), wage 
+
+                    
+
+
+
+1. select the names of all orchestrates that have the same city of origin as any city in which any orchestra performed in 2013.
+
+
+
+2. select the names and postions of all orchestra members that have above 10 years of experience and donot belong to  orchestras with a rating below 8.0
+
+
+select name, position from members m join orchestras o on m.orchestra_id = o.id 
+where m.experience > 10 and o.rating >= 8.0
+
+
+3. Show the name and position of orchestra members who earn more than the average wage of all violinists.
+
+select name, position from members where wage > (select avg(Wage) from members where position = 'violinists')
+
+
+4. Show the names of orchestras that were created after the 'Chamber Orchestra' and have a rating greater than 7.5.
+
+select name from orchestras where year > (select year from orchestras where name ='Chamber Orchestra') and rating > 7.5
+
+5. Show the name and number of members for each orchestra that has more members than the average membership of all orchestras in the table.
+
+select name, (select count(id) from members group by orchestra_id) as no_of_members from orchestra where no.of_members > (select avg(
+
+
+
+1. Display the IDs and titles of all courses that took place during any spring term.
+
+select id, title from course 
+where id in (select course_id from course_edition 
+where id in (select id from academic_semester 
+where term ='spring term'))
+
+
+
+2. Select All Students Who Passed At Least One Course
+
+select id, first_name from students s join course_enrollment c on s.id = c.student_id where s.passed >= 1
+
+using subquery:
+select id, first_name, last_name from students where id = any(select student_id from course_enrollment where passed =True  group by student_id having count(*) >=1 )
+
+
+3. Find the lecturer(s) with the least number of courses taught. Display the lecturer’s first and last name and the number of courses they teach (as no_of_courses).
+
+select first_name, last_name, count(e.course_id) from lecturer l join course_edition e on l.id = e.lecturer.id group by lecturer_id
+
+
+using subquery:
+select first_name, last_name, 
+
+
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+Date: 2 july 2024, tuesday
+
+
+Topic: Transactions
+
+There are 2 types of transactions:
+1. Conflict serializability (atleast one right operation): convert non serial schedule to serial schedule just by swapping instructions.
+
+   Example:
+         | Non serial    |   serial   |
+	 |   R(A)	 |	      |
+
+
+Dirty read: wrong data reading
+---------- 
+A DIRTY READ OCCURS WHEN ONE TRANSACTION IS READS THE DATA THAT HAS BEEN MODIFIED BY THE ANOTHER TRANSACTION WHICH IS NOT COMMITED YET.
+
+
+serializability: used to convert the inconsistant data into consistient data.
+
+
+
+Predense graph: ( to overcome issue of conflict serializability):
+Steps:
+      1. draw the vertices = no.of transactions
+      2. start from up to down
+      3. check the conflicting operation like R(A) means go and search for W(A) and draw the connection between those transactions.
+      4. If operations repeats leave it.
+      5. If any cycle come like trasaction 1 --> 2 and 2 --> 1 , stop the process.
+
+Example:
+
+| T1  |  T2  | T3  |
+| R(X)|      |     |
+|     | W(Y) |     |
+| W(X)|      |     |
+|     |      | W(X)|
+|     | R(X) |     |
+|     | W(X) |     |
+
+
+	     - T1
+           -      - 
+	<-	   -
+      T2 <--------- ->T3
+
+NO CYCLE FORMED. SO 
+
+
+
+
+2. View serializability: If one schedule is view equivalent to other schedule then its view serilizability
+[FIRST CHECK CONFLICT SERIALIZABILITY THEN ONLY WE NEED TO CHECK VIEW SERIALIZABILITY]
+	1. INTIAL READ
+	2. FINAL UPDATION
+	3. WRITE READ SEQUENCE
+
+
+
+
+WR SEQUENCE
+-----------
+
+S
+--
+
+RA                    
+WA 
+   RA
+   WA
+RB
+WB
+   RB
+   WB
+
+T1 --> T2
+
+
+
+S'
+---
+
+RA
+WA
+RB
+WB
+   RA
+   WA
+   RB
+   WB
+
+
+EXAMPLE
+
+
+recoverable
+
+
+Cascade: FORCEFUL OPERATIONS ---> changes in the parent table propagates to the child table (connected by a foreign key)
+
+Cascadeless: ALWAYS PREFER CASCADELESS...
+------------
+WHEN THERE IS NO DIRTY READS, THEN DATA IS CONSISTENT. IT'S CALLED CASCADELESS.
+
+
+INDEXING:
+1. primary index
+2. secondary index
+3. clustered index
+
+
+

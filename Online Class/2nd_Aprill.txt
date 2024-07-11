@@ -1,0 +1,12 @@
+Practical session of naive bayes....\
+
+
+*** Document classification model ***
+
+laplace smoothening -- used to create a no
+
+
+Bernoulli naive bayes -- tells about presence or absence of word in the document
+
+
+model based imputation -- like KNN 

@@ -1,0 +1,20 @@
+what if we are having continuous features in data? which one we need to use either naive bayes, normal distribution?
+we need to assume that they are in normal distribution .... check using shapiro test 
+If it is not following normal distribution we need to transform them using boxcox, log, power transformation techniques
+
+what are the consideration you need to see before using naive bayes?
+1. features should be independent to each other
+2. If it is categorical features then it is best to use navie bayes
+3. If we have numeric features then we need to assume it is following normal distribution or not 
+4. do shapiro test then if it is not normal distribution then use box cox transformation,power, to convert it
+5. if it is still doesnot work then we cant use navie bayes.
+
+
+fequentist approach -- more relie on data(interms of data)
+bayes approach -- you cannot draw probability from data every time -- data and perception(knowledge)
+
+prior idea(perception/domain knowledge) -- that what exactly i know --> sun rises from west
+data -- sun rises from east -- posterior --updated with data --> combined with the knowledge
+
+
+while using naive bayes we always want to findout p(y=1|x)

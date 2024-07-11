@@ -1,0 +1,76 @@
+clustering
+
+--- for clustering first preprocessig step is to standardize the data to make it unitless and common scale.
+---------------------------------------------------------------------------------------------------------------
+clustering based applications used in industry are customer segmentation, 
+
+Types of clustering: basically we can cluster in two ways
+1. Hard clustering
+2. Soft clustering
+
+clustering algorithms
+1. partition clustering algorithm
+   - dividing the data into fixed set of clusters
+   - if any point nearer to the center of the cluster then it allocate the point to that particular cluster
+2. Hierarchical clustering
+   - starting with all data points as one cluster and recursively splitting them into smaller clusters.
+
+3. Density based clustering:
+   - cluster based on density of data 
+
+4. Distribution model based clustering:
+   - clusters follow normal distribution
+   - soft clustering method - based on the probability an observation fall into particular cluster
+
+
+5. Fuzzy clustering
+
+
+Distance measure:
+- used to find similarity between data points.
+Types of distance measures:
+1. classical
+2. correlation-based
+3. edit distance 
+
+- classical distance measure is the most commonly used distance measure in clustering algorithms.
+
+euclidian distance:
+sqrt((p1-q1)^2+(p2-q2)^2)
+
+Manhattan Distance:
+distance = |p2- p1| + |q2- q1|
+
+minkowski distance:
+summation(1-n)(|xi - yi|^p)^1/p
+
+cosime distance:
+
+------------------------------------------------------------------------------------------------------------------
+hopkins statistic: used to measure the custering tendency of data.
+- IT HELPS IN DETERMINING WHEATHER A DATASET EXHIBITS A NATURAL CLUSTERING STRUCTURE OR NOT.
+
+Terms:
+tree or dendrogram
+
+
+
+
+
+
+
+
+
+=================================================================================================================
+
+K-MEANS ALGORITHM
+
+steps:
+1. selecting the value of k
+----------------------------
+methods to select the value of k
+1. elbow method
+2. sulhouette method
+
+Elbow method:
+total distance of each of the candiadte with in the cluster
